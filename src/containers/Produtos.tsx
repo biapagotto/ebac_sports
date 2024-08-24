@@ -1,43 +1,47 @@
-import { Produto as ProdutoType } from '../App'
-import Produto from '../components/Produto'
+import React from 'react'
 
-import * as S from './styles'
-
-type Props = {
-  produtos: ProdutoType[]
-  favoritos: ProdutoType[]
-  adicionarAoCarrinho: (produto: ProdutoType) => void
-  favoritar: (produto: ProdutoType) => void
+export type ProdutoType = {
+  id: number
+  nome: string
+  preco: number
+  imagem: string
 }
 
-const ProdutosComponent = ({
+export const paraReal = (valor: number) =>
+  new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
+    valor
+  )
+
+interface ProdutosProps {
+  produtos: ProdutoType[]
+  favoritos: ProdutoType[]
+  favoritar: (produto: ProdutoType) => void
+  adicionarAoCarrinho: (produto: ProdutoType) => void
+}
+
+const Produtos: React.FC<ProdutosProps> = ({
   produtos,
   favoritos,
-  adicionarAoCarrinho,
-  favoritar
-}: Props) => {
-  const produtoEstaNosFavoritos = (produto: ProdutoType) => {
-    const produtoId = produto.id
-    const IdsDosFavoritos = favoritos.map((f) => f.id)
-
-    return IdsDosFavoritos.includes(produtoId)
-  }
-
+  favoritar,
+  adicionarAoCarrinho
+}) => {
   return (
-    <>
-      <S.Produtos>
-        {produtos.map((produto) => (
-          <Produto
-            estaNosFavoritos={produtoEstaNosFavoritos(produto)}
-            key={produto.id}
-            produto={produto}
-            favoritar={favoritar}
-            aoComprar={adicionarAoCarrinho}
-          />
-        ))}
-      </S.Produtos>
-    </>
+    <div>
+      {produtos.map((produto) => (
+        <div key={produto.id}>
+          <h2>{produto.nome}</h2>
+          <button onClick={() => adicionarAoCarrinho(produto)}>
+            Adicionar ao Carrinho
+          </button>
+          <button onClick={() => favoritar(produto)}>
+            {favoritos.some((p) => p.id === produto.id)
+              ? 'Remover dos Favoritos'
+              : 'Adicionar aos Favoritos'}
+          </button>
+        </div>
+      ))}
+    </div>
   )
 }
 
-export default ProdutosComponent
+export default Produtos

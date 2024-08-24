@@ -1,4 +1,4 @@
-import { Produto as ProdutoType } from '../../App'
+import { ProdutoType } from '../../containers/Produtos'
 import * as S from './styles'
 
 type Props = {
@@ -23,6 +23,7 @@ const ProdutoComponent = ({
     <S.Produto>
       <S.Capa>
         <img src={produto.imagem} alt={produto.nome} />
+        {estaNosFavoritos && <S.Tag>Favorito</S.Tag>}
       </S.Capa>
       <S.Titulo>{produto.nome}</S.Titulo>
       <S.Prices>

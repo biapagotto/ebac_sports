@@ -1,54 +1,35 @@
-import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { toggleFavorito } from './components/slices/favoritosSlice'
+import { RootState, AppDispatch } from './components/store'
 import Header from './components/Header'
 import Produtos from './containers/Produtos'
-
 import { GlobalStyle } from './styles'
-
-export type Produto = {
-  id: number
-  nome: string
-  preco: number
-  imagem: string
-}
+import { ProdutoType } from './containers/Produtos'
+import { useEffect, useState } from 'react'
 
 function App() {
-  const [produtos, setProdutos] = useState<Produto[]>([])
-  const [carrinho, setCarrinho] = useState<Produto[]>([])
-  const [favoritos, setFavoritos] = useState<Produto[]>([])
+  const dispatch = useDispatch<AppDispatch>()
+  const favoritos = useSelector((state: RootState) => state.favoritos.itens)
+  const [produtos, setProdutos] = useState<ProdutoType[]>([])
 
   useEffect(() => {
     fetch('https://fake-api-tau.vercel.app/api/ebac_sports')
       .then((res) => res.json())
       .then((res) => setProdutos(res))
+      .catch((err) => console.error('Erro ao carregar produtos:', err))
   }, [])
-
-  function adicionarAoCarrinho(produto: Produto) {
-    if (carrinho.find((p) => p.id === produto.id)) {
-      alert('Item já adicionado')
-    } else {
-      setCarrinho([...carrinho, produto])
-    }
-  }
-
-  function favoritar(produto: Produto) {
-    if (favoritos.find((p) => p.id === produto.id)) {
-      const favoritosSemProduto = favoritos.filter((p) => p.id !== produto.id)
-      setFavoritos(favoritosSemProduto)
-    } else {
-      setFavoritos([...favoritos, produto])
-    }
-  }
 
   return (
     <>
       <GlobalStyle />
       <div className="container">
-        <Header favoritos={favoritos} itensNoCarrinho={carrinho} />
+        <Header favoritos={favoritos} itensNoCarrinho={[]} />
         <Produtos
           produtos={produtos}
           favoritos={favoritos}
-          favoritar={favoritar}
-          adicionarAoCarrinho={adicionarAoCarrinho}
+          favoritar={(produto) => dispatch(toggleFavorito(produto))}
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
+          adicionarAoCarrinho={() => {}}
         />
       </div>
     </>
