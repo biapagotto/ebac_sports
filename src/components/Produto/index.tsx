@@ -22,18 +22,17 @@ const ProdutoComponent = ({
   return (
     <S.Produto>
       <S.Capa>
-        <img src={produto.imagem} alt={produto.nome} />
-        {estaNosFavoritos && <S.Tag>Favorito</S.Tag>}
+        <img src={produto.imagem} alt={produto.titulo} />
       </S.Capa>
-      <S.Titulo>{produto.nome}</S.Titulo>
+      <S.Titulo>{produto.titulo}</S.Titulo>
       <S.Prices>
         <strong>{paraReal(produto.preco)}</strong>
       </S.Prices>
-      <S.BtnComprar onClick={() => favoritar(produto)} type="button">
+      <S.BtnFavoritar onClick={() => favoritar(produto)} type="button">
         {estaNosFavoritos
           ? '- Remover dos favoritos'
           : '+ Adicionar aos favoritos'}
-      </S.BtnComprar>
+      </S.BtnFavoritar>
       <S.BtnComprar onClick={() => aoComprar(produto)} type="button">
         Adicionar ao carrinho
       </S.BtnComprar>

@@ -1,46 +1,41 @@
-import React from 'react'
+import Produto from '../components/Produto'
+import * as S from './styles'
 
 export type ProdutoType = {
   id: number
-  nome: string
+  titulo: string
+  plataformas: string[]
+  precoAntigo: number
   preco: number
+  categoria: string
   imagem: string
 }
 
-export const paraReal = (valor: number) =>
-  new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
-    valor
-  )
-
-interface ProdutosProps {
+type Props = {
   produtos: ProdutoType[]
   favoritos: ProdutoType[]
   favoritar: (produto: ProdutoType) => void
   adicionarAoCarrinho: (produto: ProdutoType) => void
 }
 
-const Produtos: React.FC<ProdutosProps> = ({
+const Produtos = ({
   produtos,
-  favoritos,
+  adicionarAoCarrinho,
   favoritar,
-  adicionarAoCarrinho
-}) => {
+  favoritos
+}: Props) => {
   return (
-    <div>
+    <S.Produtos>
       {produtos.map((produto) => (
-        <div key={produto.id}>
-          <h2>{produto.nome}</h2>
-          <button onClick={() => adicionarAoCarrinho(produto)}>
-            Adicionar ao Carrinho
-          </button>
-          <button onClick={() => favoritar(produto)}>
-            {favoritos.some((p) => p.id === produto.id)
-              ? 'Remover dos Favoritos'
-              : 'Adicionar aos Favoritos'}
-          </button>
-        </div>
+        <Produto
+          key={produto.id}
+          produto={produto}
+          aoComprar={adicionarAoCarrinho}
+          favoritar={() => favoritar(produto)}
+          estaNosFavoritos={favoritos.some((fav) => fav.id === produto.id)}
+        />
       ))}
-    </div>
+    </S.Produtos>
   )
 }
 

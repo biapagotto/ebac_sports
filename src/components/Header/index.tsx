@@ -1,15 +1,14 @@
-import React from 'react'
 import * as S from './styles'
-import { ProdutoType } from '../../containers/Produtos'
+import { Produto } from '../../App'
 import cesta from '../../assets/cesta.png'
 import { paraReal } from '../Produto'
 
 type Props = {
-  itensNoCarrinho: ProdutoType[]
-  favoritos: ProdutoType[]
+  itensNoCarrinho: Produto[]
+  favoritos: Produto[]
 }
 
-const Header: React.FC<Props> = ({ itensNoCarrinho, favoritos }) => {
+const Header = ({ itensNoCarrinho, favoritos }: Props) => {
   const valorTotal = itensNoCarrinho.reduce((acc, item) => {
     acc += item.preco
     return acc
@@ -20,7 +19,7 @@ const Header: React.FC<Props> = ({ itensNoCarrinho, favoritos }) => {
       <h1>EBAC Sports</h1>
       <div>
         <span>{favoritos.length} favoritos</span>
-        <img src={cesta} alt="Cesta" />
+        <img src={cesta} alt="Cesta de compras" />
         <span>
           {itensNoCarrinho.length} itens, valor total: {paraReal(valorTotal)}
         </span>
