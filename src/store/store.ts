@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
-import carrinhoReducer from './slices/carrinhoSlice'
-import favoritosReducer from './slices/favoritosSlice'
+import carrinhoReducer from './redux/carrinhoSlice'
+import favoritosReducer from './redux/favoritosSlice'
 import { api } from '../services/api'
 
 const store = configureStore({
@@ -10,7 +10,8 @@ const store = configureStore({
     [api.reducerPath]: api.reducer
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(api.middleware)
+    getDefaultMiddleware().concat(api.middleware),
+  devTools: process.env.NODE_ENV !== 'production'
 })
 
 export type RootState = ReturnType<typeof store.getState>
