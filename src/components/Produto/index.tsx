@@ -1,5 +1,6 @@
 import { ProdutoType } from '../../containers/Produtos'
 import * as S from './styles'
+import { paraReal } from '../../utils/formatters'
 
 type Props = {
   produto: ProdutoType
@@ -8,17 +9,16 @@ type Props = {
   estaNosFavoritos: boolean
 }
 
-export const paraReal = (valor: number) =>
-  new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
-    valor
-  )
-
 const ProdutoComponent = ({
   produto,
   aoComprar,
   favoritar,
   estaNosFavoritos
 }: Props) => {
+  const handleAdicionarAoCarrinho = () => {
+    aoComprar(produto)
+  }
+
   return (
     <S.Produto>
       <S.Capa>
@@ -33,7 +33,7 @@ const ProdutoComponent = ({
           ? '- Remover dos favoritos'
           : '+ Adicionar aos favoritos'}
       </S.BtnFavoritar>
-      <S.BtnComprar onClick={() => aoComprar(produto)} type="button">
+      <S.BtnComprar onClick={handleAdicionarAoCarrinho} type="button">
         Adicionar ao carrinho
       </S.BtnComprar>
     </S.Produto>

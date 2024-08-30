@@ -3,7 +3,7 @@ import carrinhoReducer from './redux/carrinhoSlice'
 import favoritosReducer from './redux/favoritosSlice'
 import { api } from '../services/api'
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     carrinho: carrinhoReducer,
     favoritos: favoritosReducer,
@@ -16,5 +16,3 @@ const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
-
-export default store
